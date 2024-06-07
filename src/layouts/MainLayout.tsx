@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren, useCallback, useEffect, useState } from "react";
+import { FunctionComponent, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
 import { Inter } from "next/font/google";
 import classNames from "classnames";
 import { Button } from "@/components/Button";
@@ -37,7 +37,6 @@ export const MainLayout: FunctionComponent<
 
     const newController = new AbortController();
     setController(newController);
-
     fetchData<User>(`/api/person?person=${person}`, newController.signal)
       .then((result) => {
         setLoading(result.loading);
@@ -45,7 +44,6 @@ export const MainLayout: FunctionComponent<
           setError(result.error);
         }
         setData(result.data);
-        console.log(result.data);
       });
   }, [controller]);
 
@@ -56,6 +54,13 @@ export const MainLayout: FunctionComponent<
       }
     };
   }, [controller]);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      console.log("currentTime : ",currentTime); 
+    }
+  }, [data]);
   
   useEffect(() => {
     const getCurrentTime = () => {
@@ -68,10 +73,9 @@ export const MainLayout: FunctionComponent<
     const intervalId = setInterval(() => {
       setCurrentTime(getCurrentTime());
     }, 1000);
-    console.log("currentTime : ",currentTime); 
 
     return () => clearInterval(intervalId);
-  }, [selectedValue]);
+  }, []);
 
   return (
     <main
