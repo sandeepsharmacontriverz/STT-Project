@@ -32,7 +32,12 @@ export const MainLayout: FunctionComponent<
     setData(null);
 
     if (controller) {
-      controller.abort();
+      try {
+        controller.abort();
+      } catch (error) {
+        // Catch the error and handle it silently
+      }
+      
     }
 
     const newController = new AbortController();
