@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
+import { FunctionComponent, PropsWithChildren, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Inter } from "next/font/google";
 import classNames from "classnames";
 import { Button } from "@/components/Button";
@@ -25,6 +25,14 @@ export const MainLayout: FunctionComponent<
   const [controller, setController] = useState<AbortController | null>(null);
   const [currentTime, setCurrentTime] = useState('');
 
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const formattedDate = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
+    const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+    return `${formattedDate} : ${formattedTime}`;
+  };
+
   const handleClick = useCallback((person: Person) => {
     setSelectedValue(person);
     setLoading(true);
@@ -44,6 +52,10 @@ export const MainLayout: FunctionComponent<
           setError(result.error);
         }
         setData(result.data);
+        console.log(result.data);
+      console.log("currentTime : ",getCurrentTime()); 
+      }).catch((error) => {
+        setError(error.error);
       });
   }, [controller]);
 
@@ -54,22 +66,8 @@ export const MainLayout: FunctionComponent<
       }
     };
   }, [controller]);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-      console.log("currentTime : ",currentTime); 
-    }
-  }, [data]);
   
   useEffect(() => {
-    const getCurrentTime = () => {
-      const now = new Date();
-      const formattedDate = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
-      const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-      return `${formattedDate} : ${formattedTime}`;
-    };
-
     const intervalId = setInterval(() => {
       setCurrentTime(getCurrentTime());
     }, 1000);
