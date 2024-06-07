@@ -17,12 +17,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
         >
             {user && (
                 <>
-                    <Image
+                    <img
                      className=" w-36 h-36 rounded-full mx-auto mb-4 object-cover"
                         src={user.profilePictureUrl}
                         width={500}
                         height={500}
                         alt={user.name}
+                        
                     />
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">{user.name}</h2>
                     <p className="text-lg text-gray-600 mb-4">{user.title}</p>

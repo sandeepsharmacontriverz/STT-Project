@@ -24,7 +24,6 @@ export const MainLayout: FunctionComponent<
   const [data, setData] = useState<User | null>(null);
   const [controller, setController] = useState<AbortController | null>(null);
 
- 
   const handleClick = useCallback((person: Person) => {
     setSelectedValue(person);
     setLoading(true);
@@ -32,12 +31,7 @@ export const MainLayout: FunctionComponent<
     setData(null);
 
     if (controller) {
-      try {
-        controller.abort();
-      } catch (error) {
-        // Catch the error and handle it silently
-      }
-      
+      controller.abort();
     }
 
     const newController = new AbortController();

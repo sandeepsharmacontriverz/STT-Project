@@ -50,7 +50,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     } else if (!person && users) {
       res.status(200).json(users);
     } else {
-      res.status(500).send("Error: Request failed for Person C");
+      res.status(404).send("Error: Request failed for Person C");
     }
   } catch (error) {
     console.error(error);
