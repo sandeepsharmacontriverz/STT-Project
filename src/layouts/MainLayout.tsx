@@ -23,6 +23,7 @@ export const MainLayout: FunctionComponent<
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<User | null>(null);
   const [controller, setController] = useState<AbortController | null>(null);
+  const [currentTime, setCurrentTime] = useState('');
 
   const handleClick = useCallback((person: Person) => {
     setSelectedValue(person);
@@ -55,6 +56,22 @@ export const MainLayout: FunctionComponent<
       }
     };
   }, [controller]);
+  
+  useEffect(() => {
+    const getCurrentTime = () => {
+      const now = new Date();
+      const formattedDate = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
+      const formattedTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+      return `${formattedDate} : ${formattedTime}`;
+    };
+
+    const intervalId = setInterval(() => {
+      setCurrentTime(getCurrentTime());
+    }, 1000);
+    console.log("currentTime : ",currentTime); 
+
+    return () => clearInterval(intervalId);
+  }, [selectedValue]);
 
   return (
     <main
@@ -85,7 +102,7 @@ export const MainLayout: FunctionComponent<
         <div className="mt-5 h-32 w-fit flex items-center bg-white px-4 rounded-md"> {error} </div>
       }
       <div className="fixed bottom-20 right-10">
-        <DateTime />
+        <DateTime currentTime={currentTime} />
       </div>
     </main>
   );
