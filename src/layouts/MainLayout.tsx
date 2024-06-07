@@ -45,6 +45,7 @@ export const MainLayout: FunctionComponent<
           setError(result.error);
         }
         setData(result.data);
+        console.log(result.data);
       });
   }, [controller]);
 
@@ -80,10 +81,9 @@ export const MainLayout: FunctionComponent<
               user={data}
             />
         </div>
-      ) :
-      (
-        <div className="mt-5 h-56 flex items-center"> {error} </div>
-      )
+      ) : 
+        error &&
+        <div className="mt-5 h-32 w-fit flex items-center bg-white px-4 rounded-md"> {error} </div>
       }
       <div className="fixed bottom-20 right-10">
         <DateTime />
